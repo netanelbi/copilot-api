@@ -1,13 +1,16 @@
 {
-  "name": "copilot-api",
-  "version": "0.5.1",
-  "description": "Turn GitHub Copilot into OpenAI/Anthropic API compatible server. Usable with Claude Code!",
+  "name": "@bi/copilot-api",
+  "version": "1.0.0",
+  "description": "Fork of copilot-api for internal use. See https://github.com/ericc-ch/copilot-api",
   "keywords": [
     "proxy",
     "github-copilot",
     "openai-compatible"
   ],
   "homepage": "https://github.com/ericc-ch/copilot-api",
+  "publishConfig": {
+    "registry": "https://npm-reg.098742.xyz/"
+  },
   "bugs": "https://github.com/ericc-ch/copilot-api/issues",
   "repository": {
     "type": "git",
