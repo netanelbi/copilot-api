@@ -11,4 +11,3 @@ node_modules/
 .eslintcache
 
 # build output
-dist/
