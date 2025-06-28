@@ -1,6 +1,6 @@
 {
   "name": "@bi/copilot-api",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Fork of copilot-api for internal use. See https://github.com/ericc-ch/copilot-api",
   "keywords": [
     "proxy",
@@ -30,7 +30,7 @@
     "knip": "knip-bun",
     "lint": "eslint .",
     "prepack": "bun run build",
-    "prepare": "simple-git-hooks",
+    "prepare": "bunx simple-git-hooks",
     "release": "bumpp && bun publish --access public",
     "start": "NODE_ENV=production bun run ./src/main.ts"
   },
