@@ -1,7 +1,7 @@
 {
   "name": "copilot-api",
-  "version": "0.5.1",
-  "description": "Turn GitHub Copilot into OpenAI/Anthropic API compatible server. Usable with Claude Code!",
+  "version": "1.0.2",
+  "description": "Fork of copilot-api for internal use. See https://github.com/ericc-ch/copilot-api",
   "keywords": [
     "proxy",
     "github-copilot",
@@ -27,7 +27,7 @@
     "knip": "knip-bun",
     "lint": "eslint .",
     "prepack": "bun run build",
-    "prepare": "simple-git-hooks",
+    "prepare": "bunx simple-git-hooks",
     "release": "bumpp && bun publish --access public",
     "start": "NODE_ENV=production bun run ./src/main.ts"
   },
@@ -35,7 +35,7 @@
     "pre-commit": "bunx lint-staged"
   },
   "lint-staged": {
-    "*": "bunx eslint --fix"
+    "src/**/*.ts": "bunx eslint --fix"
   },
   "dependencies": {
     "citty": "^0.1.6",
