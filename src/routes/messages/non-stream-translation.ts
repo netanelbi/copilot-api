@@ -83,9 +83,8 @@ function handleUserMessage(message: AnthropicUserMessage): Array<Message> {
       (block): block is AnthropicToolResultBlock =>
         block.type === "tool_result",
     )
-    const textBlocks = message.content.filter((block) => block.type === "text")
     const otherBlocks = message.content.filter(
-      (block) => block.type !== "tool_result" && block.type !== "text",
+      (block) => block.type !== "tool_result",
     )
     // OpenAI order: tool results FIRST, then user text (if any)
     for (const block of toolResultBlocks) {
@@ -98,19 +97,24 @@ function handleUserMessage(message: AnthropicUserMessage): Array<Message> {
           : JSON.stringify(block.content),
       })
     }
-    if (textBlocks.length > 0 || otherBlocks.length > 0) {
-      const textContent = [
-        ...textBlocks.map((b) => b.text),
-        ...otherBlocks.map((b) => JSON.stringify(b)), // fallback for custom blocks
-      ]
-        .join("\n\n")
-        .trim()
-      if (textContent.length > 0) {
-        msgs.push({
-          role: "user",
-          content: textContent,
-        })
-      }
+    if (otherBlocks.length > 0) {
+      const contentParts: Array<ContentPart> = otherBlocks.map((block) => {
+        if (block.type === "image") {
+          return {
+            type: "image_url",
+            image_url: {
+              url: `data:${block.source.media_type};base64,${block.source.data}`,
+            },
+          }
+        }
+        // All other blocks are assumed to be text
+        return { type: "text", text: block.text }
+      })
+
+      msgs.push({
+        role: "user",
+        content: contentParts,
+      })
     }
   } else {
     msgs.push({
@@ -176,28 +180,10 @@ function mapContent(
     return null
   }
 
-  const hasImage = content.some((block) => block.type === "image")
-  if (!hasImage) {
-    return content
-      .filter((block): block is AnthropicTextBlock => block.type === "text")
-      .map((block) => block.text)
-      .join("\n\n")
-  }
-
-  const contentParts: Array<ContentPart> = []
-  for (const block of content) {
-    if (block.type === "text") {
-      contentParts.push({ type: "text", text: block.text })
-    } else if (block.type === "image") {
-      contentParts.push({
-        type: "image_url",
-        image_url: {
-          url: `data:${block.source.media_type};base64,${block.source.data}`,
-        },
-      })
-    }
-  }
-  return contentParts
+  return content
+    .filter((block): block is AnthropicTextBlock => block.type === "text")
+    .map((block) => block.text)
+    .join("\n\n")
 }
 
 function translateAnthropicToolsToOpenAI(
