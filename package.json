@@ -1,6 +1,6 @@
 {
-  "name": "copilot-api",
-  "version": "1.0.2",
+  "name": "@bi/copilot-api",
+  "version": "1.0.3",
   "description": "Fork of copilot-api for internal use. See https://github.com/ericc-ch/copilot-api",
   "keywords": [
     "proxy",
